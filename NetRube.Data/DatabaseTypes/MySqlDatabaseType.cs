@@ -25,7 +25,7 @@ namespace NetRube.Data.DatabaseTypes
 		/// <returns>转码后的表名或列名</returns>
 		public override string EscapeSqlIdentifier(string str)
 		{
-			if(str[0] == '{' && str[str.Length - 1] == '}') return str;
+			if(str[0] == '`' && str[str.Length - 1] == '`') return str;
 
 			return string.Format("`{0}`", str);
 		}
