@@ -262,6 +262,16 @@ namespace NetRube.Data
 		/// <param name="db">数据库实例</param>
 		/// <param name="expression">字段表达式</param>
 		/// <returns>转码后的字段列名称</returns>
+		public static string GetColumnName<T>(this Database db, Expression expression)
+		{
+			return GetColumnName(db, typeof(T), Utils.GetPropertyName(expression));
+		}
+
+		/// <summary>获取字段列名称</summary>
+		/// <typeparam name="T">实体类型</typeparam>
+		/// <param name="db">数据库实例</param>
+		/// <param name="expression">字段表达式</param>
+		/// <returns>转码后的字段列名称</returns>
 		public static string GetColumnName<T>(this Database db, Expression<Func<T, object>> expression)
 		{
 			return GetColumnName(db, typeof(T), Utils.GetPropertyName(expression));
@@ -286,8 +296,7 @@ namespace NetRube.Data
 		/// <returns>转码后的表名</returns>
 		public static string GetTableName(this Database db, Type type)
 		{
-			var ti = PocoData.ForType(type).TableInfo;
-			return GetTableName(db, ti.TableName);
+			return GetTableName(db, PocoData.ForType(type).TableInfo.TableName);
 		}
 
 		/// <summary>获取表名称</summary>
@@ -316,6 +325,16 @@ namespace NetRube.Data
 		public static string GetTableName(this Database db, Expression expression)
 		{
 			return GetTableName(db, Utils.GetPropertyInfo(expression).ReflectedType);
+		}
+
+		/// <summary>按字段表达式获取表名称</summary>
+		/// <typeparam name="T">实体类型</typeparam>
+		/// <param name="db">数据库实例</param>
+		/// <param name="expression">字段表达式</param>
+		/// <returns>转码后的表名</returns>
+		public static string GetTableName<T>(this Database db, Expression expression)
+		{
+			return GetTableName(db, typeof(T));
 		}
 
 		/// <summary>按字段表达式获取表名称</summary>
@@ -429,6 +448,16 @@ namespace NetRube.Data
 		{
 			var pi = Utils.GetPropertyInfo(expression);
 			return GetTableAndColumnName(db, pi.ReflectedType, pi.Name);
+		}
+
+		/// <summary>获取表名称和字段列名称</summary>
+		/// <typeparam name="T">实体类型</typeparam>
+		/// <param name="db">数据库实例</param>
+		/// <param name="expression">字段表达式</param>
+		/// <returns>组合后的表名称和字段列名称</returns>
+		public static string GetTableAndColumnName<T>(this Database db, Expression expression)
+		{
+			return GetTableAndColumnName(db, typeof(T), Utils.GetPropertyName(expression));
 		}
 
 		/// <summary>获取表名称和字段列名称</summary>

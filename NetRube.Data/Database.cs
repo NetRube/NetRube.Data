@@ -112,6 +112,10 @@ namespace NetRube.Data
 
 			// What character is used for delimiting parameters in SQL
 			_paramPrefix = _dbType.GetParameterPrefix(_connectionString);
+
+			this.EnableWriteLog = ConfigurationManager.AppSettings["EnableWriteDBLog"].ToBool_();
+			this.LogPath = ConfigurationManager.AppSettings["DBLogPath"];
+			this.LogPath = Utils.GetMapPath(this.LogPath.IsNullOrEmpty_() ? @"App_Data/Logs.txt" : this.LogPath);
 		}
 
 		#endregion
@@ -1942,8 +1946,28 @@ namespace NetRube.Data
 			// Save it
 			_lastSql = cmd.CommandText;
 			_lastArgs = (from IDataParameter parameter in cmd.Parameters select parameter.Value).ToArray();
+
+			if(this.EnableWriteLog)
+				this.WriteLog();
 		}
 
+		#endregion
+
+		#region 扩展
+		/// <summary>获取或设置是否启用日志记录</summary>
+		/// <value>如果启用日志记录，则该值为 <c>true</c>；否则为 <c>false</c>。</value>
+		public bool EnableWriteLog { get; set; }
+		/// <summary>获取或设置日志路径</summary>
+		/// <value>日志路径</value>
+		public string LogPath { get; set; }
+
+		/// <summary>记录日志</summary>
+		public void WriteLog()
+		{
+			Utils.WriteTextFile("时间: {0}\t数据库类型:{1}{2}{3}{2}{2}"
+				.F(DateTime.Now.ToString_(), this._dbType.GetType().Name, Environment.NewLine, this.LastCommand),
+				this.LogPath);
+		}
 		#endregion
 	}
 }
