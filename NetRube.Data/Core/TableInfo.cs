@@ -1,8 +1,21 @@
-﻿// PetaPoco - A Tiny ORMish thing for your POCO's.
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: TableInfo.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+// PetaPoco - A Tiny ORMish thing for your POCO's.
 // Copyright © 2011-2012 Topten Software.  All Rights Reserved.
 
 using System;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
 	/// <summary>
@@ -10,7 +23,9 @@ namespace NetRube.Data
 	/// </summary>
 	public class TableInfo
 	{
-		/// <summary>获取或设置数据表名称</summary>
+		/// <summary>
+		/// 获取或设置数据表名称
+		/// </summary>
 		/// <value>数据表名称</value>
 		public string TableName
 		{
@@ -18,7 +33,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置数据表主键名称</summary>
+		/// <summary>
+		/// 获取或设置数据表主键名称
+		/// </summary>
 		/// <value>数据表主键名称</value>
 		public string PrimaryKey
 		{
@@ -26,7 +43,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置一个值，该值指示是否为自增主键</summary>
+		/// <summary>
+		/// 获取或设置一个值，该值指示是否为自增主键
+		/// </summary>
 		/// <value>如果为自增主键，则该值为 <c>true</c>；否则为 <c>false</c>。</value>
 		public bool AutoIncrement
 		{
@@ -34,7 +53,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置作为 Oracle 自增主键的序列字段名</summary>
+		/// <summary>
+		/// 获取或设置作为 Oracle 自增主键的序列字段名
+		/// </summary>
 		/// <value>Oracle 自增主键的序列字段名</value>
 		public string SequenceName
 		{
@@ -43,7 +64,9 @@ namespace NetRube.Data
 		}
 
 
-		/// <summary>从实体类型生成数据表信息</summary>
+		/// <summary>
+		/// 从实体类型生成数据表信息
+		/// </summary>
 		/// <param name="t">实体类型</param>
 		/// <returns>数据表信息</returns>
 		public static TableInfo FromPoco(Type t)

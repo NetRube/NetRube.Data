@@ -1,10 +1,23 @@
-﻿// PetaPoco - A Tiny ORMish thing for your POCO's.
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: SqlServerCEDatabaseType.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+// PetaPoco - A Tiny ORMish thing for your POCO's.
 // Copyright © 2011-2012 Topten Software.  All Rights Reserved.
 
 using System.Collections.Generic;
 using System.Linq;
 using NetRube.Data.Internal;
 
+/// <summary>
+/// DatabaseTypes 命名空间
+/// </summary>
 namespace NetRube.Data.DatabaseTypes
 {
 	/// <summary>
@@ -12,7 +25,9 @@ namespace NetRube.Data.DatabaseTypes
 	/// </summary>
 	class SqlServerCEDatabaseType : DatabaseType
 	{
-		/// <summary>生成 SQL 分页查询语句</summary>
+		/// <summary>
+		/// 生成 SQL 分页查询语句
+		/// </summary>
 		/// <param name="skip">要跳过记录数量</param>
 		/// <param name="take">要获取记录数</param>
 		/// <param name="parts">原始 SQL 查询语句被解析后的组成部分</param>
@@ -25,7 +40,9 @@ namespace NetRube.Data.DatabaseTypes
 			return sqlPage;
 		}
 
-		/// <summary>执行插入操作</summary>
+		/// <summary>
+		/// 执行插入操作
+		/// </summary>
 		/// <param name="db">数据库对象</param>
 		/// <param name="cmd">要执行插入的命令</param>
 		/// <param name="PrimaryKeyName">主键名</param>
@@ -37,7 +54,9 @@ namespace NetRube.Data.DatabaseTypes
 		}
 
 		#region 扩展
-		/// <summary>生成 SQL TOP 查询语句</summary>
+		/// <summary>
+		/// 生成 SQL TOP 查询语句
+		/// </summary>
 		/// <param name="take">要获取记录数</param>
 		/// <param name="dist">指定是否返回非重复记录</param>
 		/// <param name="selectColumns">要获取的字段名列表</param>
@@ -63,7 +82,9 @@ namespace NetRube.Data.DatabaseTypes
 			return sql;
 		}
 
-		/// <summary>生成 SQL 分页查询语句</summary>
+		/// <summary>
+		/// 生成 SQL 分页查询语句
+		/// </summary>
 		/// <param name="skip">要跳过记录数量</param>
 		/// <param name="take">要获取记录数</param>
 		/// <param name="dist">指定是否返回非重复记录</param>

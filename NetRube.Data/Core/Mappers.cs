@@ -1,16 +1,33 @@
-﻿using System;
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: Mappers.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using NetRube.Data.Internal;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
-	/// <summary>对实现了 IMapper 接口的实体实例的管理</summary>
+	/// <summary>
+	/// 对实现了 IMapper 接口的实体实例的管理
+	/// </summary>
 	public static class Mappers
 	{
-		/// <summary>对指定程序集里的所有类型注册映射器</summary>
+		/// <summary>
+		/// 对指定程序集里的所有类型注册映射器
+		/// </summary>
 		/// <param name="assembly">要注册的程序集</param>
 		/// <param name="mapper">实现了 IMapper 的映射器</param>
 		public static void Register(Assembly assembly, IMapper mapper)
@@ -28,21 +45,27 @@ namespace NetRube.Data
 			RegisterInternal(type, mapper);
 		}
 
-		/// <summary>注销指定程序集里所有类型已注册的映射器</summary>
+		/// <summary>
+		/// 注销指定程序集里所有类型已注册的映射器
+		/// </summary>
 		/// <param name="assembly">要注销注册的程序集</param>
 		public static void Revoke(Assembly assembly)
 		{
 			RevokeInternal(assembly);
 		}
 
-		/// <summary>注销指定实体类型已注册的映射器</summary>
+		/// <summary>
+		/// 注销指定实体类型已注册的映射器
+		/// </summary>
 		/// <param name="type">要注销注册的实体类型</param>
 		public static void Revoke(Type type)
 		{
 			RevokeInternal(type);
 		}
 
-		/// <summary>注销指定的映射器</summary>
+		/// <summary>
+		/// 注销指定的映射器
+		/// </summary>
 		/// <param name="mapper">要注销的映射器</param>
 		public static void Revoke(IMapper mapper)
 		{
@@ -59,7 +82,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>获取指定实体对象类型的映射器</summary>
+		/// <summary>
+		/// 获取指定实体对象类型的映射器
+		/// </summary>
 		/// <param name="t">实体对象类型</param>
 		/// <returns>指定实体对象类型的映射器</returns>
 		public static IMapper GetMapper(Type t)

@@ -1,18 +1,35 @@
-﻿using System;
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: WhereBuilder.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
-	/// <summary>WHERE 构建器</summary>
+	/// <summary>
+	/// WHERE 构建器
+	/// </summary>
 	internal class WhereBuilder : ExpressionVisitor
 	{
 		private STR __sql;
 		private Database __db;
 		private bool __wtn;
 
-		/// <summary>初始化一个新 <see cref="WhereBuilder" /> 实例。</summary>
+		/// <summary>
+		/// 初始化一个新 <see cref="WhereBuilder" /> 实例。
+		/// </summary>
 		/// <param name="db">数据库实例</param>
 		/// <param name="args">参数</param>
 		/// <param name="withTableName">指定是否包含表名</param>
@@ -24,11 +41,15 @@ namespace NetRube.Data
 			this.Params = args ?? new List<object>();
 		}
 
-		/// <summary>获取参数</summary>
+		/// <summary>
+		/// 获取参数
+		/// </summary>
 		/// <value>参数集合</value>
 		public List<object> Params { get; private set; }
 
-		/// <summary>返回 WHERE 子句内容</summary>
+		/// <summary>
+		/// 返回 WHERE 子句内容
+		/// </summary>
 		/// <returns>WHERE 子句内容</returns>
 		public override string ToString()
 		{
@@ -143,7 +164,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region 重写 ExpressionVisitor
-		/// <summary>处理二元运算表达式</summary>
+		/// <summary>
+		/// 处理二元运算表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected override Expression VisitBinary(BinaryExpression expression)
@@ -157,7 +180,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理字段或属性表达式</summary>
+		/// <summary>
+		/// 处理字段或属性表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected override Expression VisitMemberAccess(MemberExpression expression)
@@ -173,7 +198,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理常量表达式</summary>
+		/// <summary>
+		/// 处理常量表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected override Expression VisitConstant(ConstantExpression expression)
@@ -184,7 +211,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理方法调用表达式</summary>
+		/// <summary>
+		/// 处理方法调用表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		/// <exception cref="System.NotImplementedException">指定方法未实现</exception>

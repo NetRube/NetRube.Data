@@ -1,10 +1,23 @@
-﻿// PetaPoco - A Tiny ORMish thing for your POCO's.
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: SQLiteDatabaseType.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+// PetaPoco - A Tiny ORMish thing for your POCO's.
 // Copyright © 2011-2012 Topten Software.  All Rights Reserved.
 
 using System;
 using NetRube.Data.Internal;
 
 
+/// <summary>
+/// DatabaseTypes 命名空间
+/// </summary>
 namespace NetRube.Data.DatabaseTypes
 {
 	/// <summary>
@@ -12,7 +25,9 @@ namespace NetRube.Data.DatabaseTypes
 	/// </summary>
 	class SQLiteDatabaseType : DatabaseType
 	{
-		/// <summary>将 C# 数据类型转换为相应数据源的数据类型</summary>
+		/// <summary>
+		/// 将 C# 数据类型转换为相应数据源的数据类型
+		/// </summary>
 		/// <param name="value">要转换的值</param>
 		/// <returns>转换后的值</returns>
 		public override object MapParameterValue(object value)
@@ -23,7 +38,9 @@ namespace NetRube.Data.DatabaseTypes
 			return base.MapParameterValue(value);
 		}
 
-		/// <summary>执行插入操作</summary>
+		/// <summary>
+		/// 执行插入操作
+		/// </summary>
 		/// <param name="db">数据库对象</param>
 		/// <param name="cmd">要执行插入的命令</param>
 		/// <param name="PrimaryKeyName">主键名</param>
@@ -42,7 +59,9 @@ namespace NetRube.Data.DatabaseTypes
 			}
 		}
 
-		/// <summary>返回用于查询记录是否存在的 SQL 语句</summary>
+		/// <summary>
+		/// 返回用于查询记录是否存在的 SQL 语句
+		/// </summary>
 		/// <returns>用于查询记录是否存在的 SQL 语句</returns>
 		public override string GetExistsSql()
 		{

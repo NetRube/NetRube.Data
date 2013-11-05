@@ -1,12 +1,29 @@
-﻿using System;
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: ExpressionVisitor.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+using System;
 using System.Linq.Expressions;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
-	/// <summary>表达式处理器</summary>
+	/// <summary>
+	/// 表达式处理器
+	/// </summary>
 	internal class ExpressionVisitor
 	{
-		/// <summary>处理表达式或委托</summary>
+		/// <summary>
+		/// 处理表达式或委托
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		/// <exception cref="System.ArgumentOutOfRangeException">expression</exception>
@@ -68,7 +85,9 @@ namespace NetRube.Data
 			throw new ArgumentOutOfRangeException("expression", expression.NodeType.ToString());
 		}
 
-		/// <summary>处理常量表达式</summary>
+		/// <summary>
+		/// 处理常量表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitConstant(ConstantExpression expression)
@@ -76,7 +95,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理字段或属性表达式</summary>
+		/// <summary>
+		/// 处理字段或属性表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitMemberAccess(MemberExpression expression)
@@ -84,7 +105,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理方法调用表达式</summary>
+		/// <summary>
+		/// 处理方法调用表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitMethodCall(MethodCallExpression expression)
@@ -92,7 +115,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理二元运算表达式</summary>
+		/// <summary>
+		/// 处理二元运算表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitBinary(BinaryExpression expression)
@@ -102,7 +127,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理一元运算表达式</summary>
+		/// <summary>
+		/// 处理一元运算表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitUnary(UnaryExpression expression)
@@ -111,7 +138,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理 Lambda 表达式</summary>
+		/// <summary>
+		/// 处理 Lambda 表达式
+		/// </summary>
 		/// <param name="lambdaExpression">Lambda 表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitLamda(LambdaExpression lambdaExpression)
@@ -128,7 +157,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>处理构造函数调用表达式</summary>
+		/// <summary>
+		/// 处理构造函数调用表达式
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>表达式</returns>
 		protected virtual Expression VisitNew(NewExpression expression)
@@ -136,7 +167,9 @@ namespace NetRube.Data
 			return expression;
 		}
 
-		/// <summary>获取二元表达式右则的值</summary>
+		/// <summary>
+		/// 获取二元表达式右则的值
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>二元表达式右则计算出来的值</returns>
 		protected virtual object GetRightValue(Expression expression)
@@ -147,7 +180,9 @@ namespace NetRube.Data
 			return Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object)), new ParameterExpression[0]).Compile()();
 		}
 
-		/// <summary>获取查询操作符</summary>
+		/// <summary>
+		/// 获取查询操作符
+		/// </summary>
 		/// <param name="op">操作符类型</param>
 		/// <returns>查询操作符</returns>
 		/// <exception cref="System.NotSupportedException">指定操作符未实现</exception>
@@ -176,7 +211,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>获取查询操作符</summary>
+		/// <summary>
+		/// 获取查询操作符
+		/// </summary>
 		/// <param name="expType">表达式树节点类型</param>
 		/// <returns>查询操作符</returns>
 		/// <exception cref="System.NotSupportedException">指定操作符未实现</exception>

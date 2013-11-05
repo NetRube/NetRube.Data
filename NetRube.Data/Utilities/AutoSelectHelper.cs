@@ -1,6 +1,19 @@
-﻿using System.Linq;
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: AutoSelectHelper.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+using System.Linq;
 using System.Text.RegularExpressions;
 
+/// <summary>
+/// Internal 命名空间
+/// </summary>
 namespace NetRube.Data.Internal
 {
 	static class AutoSelectHelper

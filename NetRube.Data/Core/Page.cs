@@ -1,15 +1,32 @@
-﻿// PetaPoco - A Tiny ORMish thing for your POCO's.
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: Page.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+// PetaPoco - A Tiny ORMish thing for your POCO's.
 // Copyright © 2011-2012 Topten Software.  All Rights Reserved.
 
 using System.Collections.Generic;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
-	/// <summary>分页数据</summary>
+	/// <summary>
+	/// 分页数据
+	/// </summary>
 	/// <typeparam name="T">实体类型</typeparam>
 	public class Page<T>
 	{
-		/// <summary>获取或设置当前页码</summary>
+		/// <summary>
+		/// 获取或设置当前页码
+		/// </summary>
 		/// <value>当前页码</value>
 		public long CurrentPage
 		{
@@ -17,7 +34,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置总页数</summary>
+		/// <summary>
+		/// 获取或设置总页数
+		/// </summary>
 		/// <value>总页数</value>
 		public long TotalPages
 		{
@@ -25,7 +44,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置总记录数</summary>
+		/// <summary>
+		/// 获取或设置总记录数
+		/// </summary>
 		/// <value>总记录数</value>
 		public long TotalItems
 		{
@@ -33,7 +54,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置每页记录数</summary>
+		/// <summary>
+		/// 获取或设置每页记录数
+		/// </summary>
 		/// <value>每页记录数</value>
 		public long ItemsPerPage
 		{
@@ -41,7 +64,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置当前页记录列表</summary>
+		/// <summary>
+		/// 获取或设置当前页记录列表
+		/// </summary>
 		/// <value>当前页记录列表</value>
 		public List<T> Items
 		{
@@ -49,7 +74,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置其它相关数据</summary>
+		/// <summary>
+		/// 获取或设置其它相关数据
+		/// </summary>
 		/// <value>其它相关数据</value>
 		public object Context
 		{

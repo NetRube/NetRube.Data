@@ -1,24 +1,43 @@
-﻿using System;
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: GetBuilder.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
-	/// <summary>查询构建器基类。内部使用，不能直接初始化此类。</summary>
+	/// <summary>
+	/// 查询构建器基类。内部使用，不能直接初始化此类。
+	/// </summary>
 	public abstract class GetBuilder
 	{
 		internal abstract string GetSql();
 	}
 
-	/// <summary>查询构建器</summary>
+	/// <summary>
+	/// 查询构建器
+	/// </summary>
 	/// <typeparam name="T">实体类型</typeparam>
 	public class GetBuilder<T> : GetBuilder where T : new()
 	{
 		private Database __db;
 		private string __table;
 
-		/// <summary>初始化一个新 <see cref="GetBuilder&lt;T&gt;" /> 实例。</summary>
+		/// <summary>
+		/// 初始化一个新 <see cref="GetBuilder&lt;T&gt;" /> 实例。
+		/// </summary>
 		/// <param name="db">数据库实例</param>
 		/// <param name="args">参数</param>
 		public GetBuilder(Database db, List<object> args = null)
@@ -28,12 +47,16 @@ namespace NetRube.Data
 			this.Params = args ?? new List<object>();
 		}
 
-		/// <summary>获取参数</summary>
+		/// <summary>
+		/// 获取参数
+		/// </summary>
 		/// <value>参数集合</value>
 		public List<object> Params { get; private set; }
 
 		#region JOIN
-		/// <summary>内连其它实体</summary>
+		/// <summary>
+		/// 内连其它实体
+		/// </summary>
 		/// <typeparam name="TJoin">连接的实体类型</typeparam>
 		/// <param name="expression">连接表达式</param>
 		/// <returns>查询构建器</returns>
@@ -42,7 +65,9 @@ namespace NetRube.Data
 			return this.InternalJoin<TJoin>("INNER JOIN", expression);
 		}
 
-		/// <summary>内连其它实体</summary>
+		/// <summary>
+		/// 内连其它实体
+		/// </summary>
 		/// <typeparam name="TJoin">连接的实体类型</typeparam>
 		/// <typeparam name="TEntity">设置关联的实体类型</typeparam>
 		/// <param name="expression">连接表达式</param>
@@ -54,7 +79,9 @@ namespace NetRube.Data
 			return this.InternalJoin<TJoin>("INNER JOIN", expression);
 		}
 
-		/// <summary>左连其它实体</summary>
+		/// <summary>
+		/// 左连其它实体
+		/// </summary>
 		/// <typeparam name="TJoin">连接的实体类型</typeparam>
 		/// <param name="expression">连接表达式</param>
 		/// <returns>查询构建器</returns>
@@ -63,7 +90,9 @@ namespace NetRube.Data
 			return this.InternalJoin<TJoin>("LEFT JOIN", expression);
 		}
 
-		/// <summary>左连其它实体</summary>
+		/// <summary>
+		/// 左连其它实体
+		/// </summary>
 		/// <typeparam name="TJoin">连接的实体类型</typeparam>
 		/// <typeparam name="TEntity">设置关联的实体类型</typeparam>
 		/// <param name="expression">连接表达式</param>
@@ -75,7 +104,9 @@ namespace NetRube.Data
 			return this.InternalJoin<TJoin>("LEFT JOIN", expression);
 		}
 
-		/// <summary>右连其它实体</summary>
+		/// <summary>
+		/// 右连其它实体
+		/// </summary>
 		/// <typeparam name="TJoin">连接的实体类型</typeparam>
 		/// <param name="expression">连接表达式</param>
 		/// <returns>查询构建器</returns>
@@ -84,7 +115,9 @@ namespace NetRube.Data
 			return this.InternalJoin<TJoin>("RIGHT JOIN", expression);
 		}
 
-		/// <summary>右连其它实体</summary>
+		/// <summary>
+		/// 右连其它实体
+		/// </summary>
 		/// <typeparam name="TJoin">连接的实体类型</typeparam>
 		/// <typeparam name="TEntity">设置关联的实体类型</typeparam>
 		/// <param name="expression">连接表达式</param>
@@ -139,7 +172,9 @@ namespace NetRube.Data
 
 		#region WHERE
 		private WhereBuilder __where;
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Where(Expression expression)
@@ -151,7 +186,9 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="property">字段栏表达式</param>
 		/// <param name="op">比较运算符</param>
 		/// <param name="value">值</param>
@@ -165,7 +202,9 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="property">字段栏表达式</param>
 		/// <param name="op">比较运算符</param>
 		/// <param name="value">值</param>
@@ -175,7 +214,9 @@ namespace NetRube.Data
 			return this.Where((Expression)property, op, value);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">The type of the 1.</typeparam>
 		/// <param name="property">字段栏表达式</param>
 		/// <param name="op">比较运算符</param>
@@ -186,7 +227,9 @@ namespace NetRube.Data
 			return this.Where((Expression)property, op, value);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Where(Expression<Func<T, bool>> expression)
@@ -194,7 +237,9 @@ namespace NetRube.Data
 			return this.Where((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -203,7 +248,9 @@ namespace NetRube.Data
 			return this.Where((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -212,7 +259,9 @@ namespace NetRube.Data
 			return this.Where((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <param name="expression">表达式</param>
@@ -224,7 +273,9 @@ namespace NetRube.Data
 			return this.Where((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <param name="expression">表达式</param>
@@ -252,7 +303,9 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="property">字段栏表达式</param>
 		/// <param name="op">比较运算符</param>
 		/// <param name="value">值</param>
@@ -266,7 +319,9 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="property">字段栏表达式</param>
 		/// <param name="op">比较运算符</param>
 		/// <param name="value">值</param>
@@ -276,7 +331,9 @@ namespace NetRube.Data
 			return this.WhereOr((Expression)property, op, value);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">The type of the 1.</typeparam>
 		/// <param name="property">字段栏表达式</param>
 		/// <param name="op">比较运算符</param>
@@ -287,7 +344,9 @@ namespace NetRube.Data
 			return this.WhereOr((Expression)property, op, value);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> WhereOr(Expression<Func<T, bool>> expression)
@@ -295,7 +354,9 @@ namespace NetRube.Data
 			return this.WhereOr((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -304,7 +365,9 @@ namespace NetRube.Data
 			return this.WhereOr((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -313,7 +376,9 @@ namespace NetRube.Data
 			return this.WhereOr((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <param name="expression">表达式</param>
@@ -325,7 +390,9 @@ namespace NetRube.Data
 			return this.WhereOr((Expression)expression);
 		}
 
-		/// <summary>查询条件</summary>
+		/// <summary>
+		/// 查询条件
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <param name="expression">表达式</param>
@@ -355,7 +422,9 @@ namespace NetRube.Data
 		}
 
 
-		/// <summary>获取所有字段</summary>
+		/// <summary>
+		/// 获取所有字段
+		/// </summary>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> SelectAll()
 		{
@@ -364,14 +433,18 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>添加获取 <typeparamref name="T" /> 类型的所有字段</summary>
+		/// <summary>
+		/// 添加获取 <typeparamref name="T" /> 类型的所有字段
+		/// </summary>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Select()
 		{
 			return this.Select(__table, "*");
 		}
 
-		/// <summary>添加获取 <typeparamref name="TEntity" /> 类型的所有字段</summary>
+		/// <summary>
+		/// 添加获取 <typeparamref name="TEntity" /> 类型的所有字段
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Select<TEntity>() where TEntity : class, new()
@@ -379,7 +452,9 @@ namespace NetRube.Data
 			return this.Select(__db.GetTableName<TEntity>(), "*");
 		}
 
-		/// <summary>添加要获取的字段</summary>
+		/// <summary>
+		/// 添加要获取的字段
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Select(Expression expression)
@@ -387,7 +462,9 @@ namespace NetRube.Data
 			return this.Select(__db.GetTableAndColumnName(expression));
 		}
 
-		/// <summary>添加要获取的字段</summary>
+		/// <summary>
+		/// 添加要获取的字段
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Select(params Expression<Func<T, object>>[] expression)
@@ -399,7 +476,9 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>添加要获取的字段</summary>
+		/// <summary>
+		/// 添加要获取的字段
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -430,7 +509,9 @@ namespace NetRube.Data
 
 		#region LIMIT
 		private int __skip;
-		/// <summary>跳过第几条记录</summary>
+		/// <summary>
+		/// 跳过第几条记录
+		/// </summary>
 		/// <param name="count">跳过记录数量</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Skip(int count)
@@ -440,7 +521,9 @@ namespace NetRube.Data
 		}
 
 		private int __take;
-		/// <summary>取连续记录数</summary>
+		/// <summary>
+		/// 取连续记录数
+		/// </summary>
 		/// <param name="count">获取记录数</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Take(int count)
@@ -452,7 +535,9 @@ namespace NetRube.Data
 
 		#region ORDER BY
 		private STR __orderby;
-		/// <summary>添加排序字段</summary>
+		/// <summary>
+		/// 添加排序字段
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> OrderBy(params Expression[] expression)
@@ -460,7 +545,9 @@ namespace NetRube.Data
 			return this.OrderBy(false, expression);
 		}
 
-		/// <summary>添加排序字段</summary>
+		/// <summary>
+		/// 添加排序字段
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> OrderBy(params Expression<Func<T, object>>[] expression)
@@ -468,7 +555,9 @@ namespace NetRube.Data
 			return this.OrderBy(false, expression);
 		}
 
-		/// <summary>添加排序字段</summary>
+		/// <summary>
+		/// 添加排序字段
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -477,7 +566,9 @@ namespace NetRube.Data
 			return this.OrderBy(false, expression);
 		}
 
-		/// <summary>添加降序排序字段</summary>
+		/// <summary>
+		/// 添加降序排序字段
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> OrderByDescending(params Expression[] expression)
@@ -485,7 +576,9 @@ namespace NetRube.Data
 			return this.OrderBy(true, expression);
 		}
 
-		/// <summary>添加降序排序字段</summary>
+		/// <summary>
+		/// 添加降序排序字段
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> OrderByDescending(params Expression<Func<T, object>>[] expression)
@@ -493,7 +586,9 @@ namespace NetRube.Data
 			return this.OrderBy(true, expression);
 		}
 
-		/// <summary>添加降序排序字段</summary>
+		/// <summary>
+		/// 添加降序排序字段
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>查询构建器</returns>
@@ -519,7 +614,9 @@ namespace NetRube.Data
 
 		#region DISTINCT
 		private bool __dist;
-		/// <summary>返回非重复记录</summary>
+		/// <summary>
+		/// 返回非重复记录
+		/// </summary>
 		/// <returns>查询构建器</returns>
 		public GetBuilder<T> Distinct()
 		{
@@ -540,7 +637,9 @@ namespace NetRube.Data
 			return this;
 		}
 
-		/// <summary>多实体关联映射</summary>
+		/// <summary>
+		/// 多实体关联映射
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <param name="cb">实体间的关联转换器</param>
@@ -557,7 +656,9 @@ namespace NetRube.Data
 				cb);
 		}
 
-		/// <summary>多实体关联映射</summary>
+		/// <summary>
+		/// 多实体关联映射
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <typeparam name="T3">实体类型 3</typeparam>
@@ -577,7 +678,9 @@ namespace NetRube.Data
 				cb);
 		}
 
-		/// <summary>多实体关联映射</summary>
+		/// <summary>
+		/// 多实体关联映射
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <typeparam name="T3">实体类型 3</typeparam>
@@ -600,7 +703,9 @@ namespace NetRube.Data
 				cb);
 		}
 
-		/// <summary>多实体关联映射</summary>
+		/// <summary>
+		/// 多实体关联映射
+		/// </summary>
 		/// <typeparam name="T1">实体类型 1</typeparam>
 		/// <typeparam name="T2">实体类型 2</typeparam>
 		/// <typeparam name="T3">实体类型 3</typeparam>
@@ -685,13 +790,17 @@ namespace NetRube.Data
 
 		#region 执行
 		#region Count
-		/// <summary>获取符合相关条件的记录数量</summary>
+		/// <summary>
+		/// 获取符合相关条件的记录数量
+		/// </summary>
 		/// <returns>返回符合相关条件的记录数量</returns>
 		public int Count()
 		{
 			return this.Count<int>();
 		}
-		/// <summary>获取符合相关条件的记录数量</summary>
+		/// <summary>
+		/// 获取符合相关条件的记录数量
+		/// </summary>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <returns>以指定的数据类型返回符合相关条件的记录数量</returns>
 		public TResult Count<TResult>()
@@ -707,7 +816,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region Exist
-		/// <summary>获取是否存在相关条件的记录</summary>
+		/// <summary>
+		/// 获取是否存在相关条件的记录
+		/// </summary>
 		/// <returns>返回是否存在相关条件的记录</returns>
 		public bool Exist()
 		{
@@ -716,14 +827,18 @@ namespace NetRube.Data
 		#endregion
 
 		#region Sum
-		/// <summary>获取指定列的和</summary>
+		/// <summary>
+		/// 获取指定列的和
+		/// </summary>
 		/// <param name="expression">列表达式</param>
 		/// <returns>符合相关条件的和</returns>
 		public int Sum(Expression<Func<T, object>> expression)
 		{
 			return this.Sum<int>(expression);
 		}
-		/// <summary>获取指定字段的和</summary>
+		/// <summary>
+		/// 获取指定字段的和
+		/// </summary>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>以指定的数据类型返回符合相关条件的和</returns>
@@ -731,7 +846,9 @@ namespace NetRube.Data
 		{
 			return __db.ExecuteScalar<TResult>("SELECT SUM({0}) FROM {1}{2} {3}".F(__db.GetColumnName(expression), this.GetFrom(), this.GetJoin(), this.GetWhere()), this.GetParams());
 		}
-		/// <summary>获取指定字段的和</summary>
+		/// <summary>
+		/// 获取指定字段的和
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>符合相关条件的和</returns>
@@ -739,7 +856,9 @@ namespace NetRube.Data
 		{
 			return this.Sum<TEntity, int>(expression);
 		}
-		/// <summary>获取指定字段的和</summary>
+		/// <summary>
+		/// 获取指定字段的和
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <param name="expression">表达式</param>
@@ -751,14 +870,18 @@ namespace NetRube.Data
 		#endregion
 
 		#region Max
-		/// <summary>获取指定列的最大值</summary>
+		/// <summary>
+		/// 获取指定列的最大值
+		/// </summary>
 		/// <param name="expression">列表达式</param>
 		/// <returns>符合相关条件的最大值</returns>
 		public int Max(Expression<Func<T, object>> expression)
 		{
 			return this.Max<int>(expression);
 		}
-		/// <summary>获取指定字段的最大值</summary>
+		/// <summary>
+		/// 获取指定字段的最大值
+		/// </summary>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>以指定的数据类型返回符合相关条件的最大值</returns>
@@ -766,7 +889,9 @@ namespace NetRube.Data
 		{
 			return __db.ExecuteScalar<TResult>("SELECT MAX({0}) FROM {1}{2} {3}".F(__db.GetColumnName(expression), this.GetFrom(), this.GetJoin(), this.GetWhere()), this.GetParams());
 		}
-		/// <summary>获取指定字段的最大值</summary>
+		/// <summary>
+		/// 获取指定字段的最大值
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>符合相关条件的最大值</returns>
@@ -774,7 +899,9 @@ namespace NetRube.Data
 		{
 			return this.Max<TEntity, int>(expression);
 		}
-		/// <summary>获取指定字段的最大值</summary>
+		/// <summary>
+		/// 获取指定字段的最大值
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <param name="expression">表达式</param>
@@ -786,14 +913,18 @@ namespace NetRube.Data
 		#endregion
 
 		#region Min
-		/// <summary>获取指定字段的最小值</summary>
+		/// <summary>
+		/// 获取指定字段的最小值
+		/// </summary>
 		/// <param name="expression">表达式</param>
 		/// <returns>符合相关条件的最小值</returns>
 		public int Min(Expression<Func<T, object>> expression)
 		{
 			return this.Min<int>(expression);
 		}
-		/// <summary>获取指定字段的最小值</summary>
+		/// <summary>
+		/// 获取指定字段的最小值
+		/// </summary>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>以指定的数据类型返回符合相关条件的最小值</returns>
@@ -801,7 +932,9 @@ namespace NetRube.Data
 		{
 			return __db.ExecuteScalar<TResult>("SELECT MIN({0}) FROM {1}{2} {3}".F(__db.GetColumnName(expression), this.GetFrom(), this.GetJoin(), this.GetWhere()), this.GetParams());
 		}
-		/// <summary>获取指定字段的最小值</summary>
+		/// <summary>
+		/// 获取指定字段的最小值
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <param name="expression">表达式</param>
 		/// <returns>符合相关条件的最小值</returns>
@@ -809,7 +942,9 @@ namespace NetRube.Data
 		{
 			return this.Min<TEntity, int>(expression);
 		}
-		/// <summary>获取指定字段的最小值</summary>
+		/// <summary>
+		/// 获取指定字段的最小值
+		/// </summary>
 		/// <typeparam name="TEntity">实体类型</typeparam>
 		/// <typeparam name="TResult">返回的数据类型</typeparam>
 		/// <param name="expression">表达式</param>
@@ -820,7 +955,9 @@ namespace NetRube.Data
 		}
 		#endregion
 
-		/// <summary>获取列表</summary>
+		/// <summary>
+		/// 获取列表
+		/// </summary>
 		/// <returns>符合相关条件的实体列表</returns>
 		public List<T> ToList()
 		{
@@ -829,7 +966,9 @@ namespace NetRube.Data
 			return __db.Query<T>(this.GetSql(), this.GetParams()).ToList();
 		}
 
-		/// <summary>获取满足条件的第一项或默认内容</summary>
+		/// <summary>
+		/// 获取满足条件的第一项或默认内容
+		/// </summary>
 		/// <returns>符合相关条件的单个实体</returns>
 		public T FirstOrDefault()
 		{
@@ -840,7 +979,9 @@ namespace NetRube.Data
 		}
 
 		#region 分页
-		/// <summary>获取分页列表</summary>
+		/// <summary>
+		/// 获取分页列表
+		/// </summary>
 		/// <param name="pageIndex">当前页索引</param>
 		/// <param name="pageSize">每页记录数</param>
 		/// <returns>符合相关条件的分页列表</returns>
@@ -862,7 +1003,9 @@ namespace NetRube.Data
 			return new PagedList<T>(ls, pageIndex, pageSize, count);
 		}
 
-		/// <summary>获取分页列表</summary>
+		/// <summary>
+		/// 获取分页列表
+		/// </summary>
 		/// <returns>符合相关条件的分页列表</returns>
 		public PagedList<T> ToPagedList()
 		{
@@ -878,7 +1021,9 @@ namespace NetRube.Data
 			return new PagedList<T>(ls, index, __take, count);
 		}
 
-		/// <summary>获取分页列表，返回 PetaPoco 的分页格式</summary>
+		/// <summary>
+		/// 获取分页列表，返回 PetaPoco 的分页格式
+		/// </summary>
 		/// <param name="pageIndex">当前页索引</param>
 		/// <param name="pageSize">每页记录数</param>
 		/// <returns>符合相关条件的 PetaPoco 分页格式列表</returns>
@@ -895,7 +1040,9 @@ namespace NetRube.Data
 			};
 		}
 
-		/// <summary>获取分页列表，返回 PetaPoco 的分页格式</summary>
+		/// <summary>
+		/// 获取分页列表，返回 PetaPoco 的分页格式
+		/// </summary>
 		/// <returns>符合相关条件的 PetaPoco 分页格式列表</returns>
 		public Page<T> ToPage()
 		{

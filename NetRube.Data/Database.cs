@@ -1,4 +1,14 @@
-﻿/* PetaPoco - A Tiny ORMish thing for your POCO's.
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: Database.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+/* PetaPoco - A Tiny ORMish thing for your POCO's.
  * Copyright © 2011-2012 Topten Software.  All Rights Reserved.
  * 
  * Apache License 2.0 - http://www.toptensoftware.com/petapoco/license
@@ -22,18 +32,23 @@ using System.Text.RegularExpressions;
 using NetRube.Data.Internal;
 
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
-	/// <summary>数据源操作主类</summary>
+	/// <summary>
+	/// 数据源操作主类
+	/// </summary>
 	public class Database : IDisposable
 	{
 		#region Constructors
-		/// <summary>使用指定的数据源连接初始化一个新 <see cref="Database"/> 实例。</summary>
+		/// <summary>
+		/// 使用指定的数据源连接初始化一个新 <see cref="Database" /> 实例。
+		/// </summary>
 		/// <param name="connection">数据源连接</param>
-		/// <remarks>
-		/// The supplied IDbConnection will not be closed/disposed by PetaPoco - that remains
-		/// the responsibility of the caller.
-		/// </remarks>
+		/// <remarks>The supplied IDbConnection will not be closed/disposed by PetaPoco - that remains
+		/// the responsibility of the caller.</remarks>
 		public Database(IDbConnection connection)
 		{
 			_sharedConnection = connection;
@@ -42,12 +57,12 @@ namespace NetRube.Data
 			CommonConstruct();
 		}
 
-		/// <summary>使用指定的数据源连接串和适配器名初始化一个新 <see cref="Database" /> 实例。</summary>
+		/// <summary>
+		/// 使用指定的数据源连接串和适配器名初始化一个新 <see cref="Database" /> 实例。
+		/// </summary>
 		/// <param name="connectionString">数据源连接串</param>
 		/// <param name="providerName">适配器名</param>
-		/// <remarks>
-		/// PetaPoco will automatically close and dispose any connections it creates.
-		/// </remarks>
+		/// <remarks>PetaPoco will automatically close and dispose any connections it creates.</remarks>
 		public Database(string connectionString, string providerName)
 		{
 			_connectionString = connectionString;
@@ -55,7 +70,9 @@ namespace NetRube.Data
 			CommonConstruct();
 		}
 
-		/// <summary>使用指定的数据源连接串和适配器初始化一个新 <see cref="Database" /> 实例。</summary>
+		/// <summary>
+		/// 使用指定的数据源连接串和适配器初始化一个新 <see cref="Database" /> 实例。
+		/// </summary>
 		/// <param name="connectionString">数据源连接串</param>
 		/// <param name="provider">适配器</param>
 		public Database(string connectionString, DbProviderFactory provider)
@@ -65,7 +82,9 @@ namespace NetRube.Data
 			CommonConstruct();
 		}
 
-		/// <summary>使用配置文件中指定的数据源连接名初始化一个新 <see cref="Database" /> 实例。</summary>
+		/// <summary>
+		/// 使用配置文件中指定的数据源连接名初始化一个新 <see cref="Database" /> 实例。
+		/// </summary>
 		/// <param name="connectionStringName">配置文件中的数据源连接名</param>
 		/// <exception cref="System.InvalidOperationException">配置文件中的数据源连接名无效</exception>
 		public Database(string connectionStringName)
@@ -121,7 +140,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region IDisposable
-		/// <summary>自动关闭打开的共享连接</summary>
+		/// <summary>
+		/// 自动关闭打开的共享连接
+		/// </summary>
 		public void Dispose()
 		{
 			// Automatically close one open connection reference
@@ -131,7 +152,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region Connection Management
-		/// <summary>获取或设置是否保持连接。当为 <c>true</c> 时，第一次打开的连接将持续到此数据源对象销毁时。</summary>
+		/// <summary>
+		/// 获取或设置是否保持连接。当为 <c>true</c> 时，第一次打开的连接将持续到此数据源对象销毁时。
+		/// </summary>
 		/// <value>如果保持连接，则该值为 <c>true</c>；否则为 <c>false</c>。</value>
 		public bool KeepConnectionAlive
 		{
@@ -139,10 +162,10 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>打开共享连接</summary>
-		/// <remarks>
-		/// Calls to Open/CloseSharedConnection are reference counted and should be balanced
-		/// </remarks>
+		/// <summary>
+		/// 打开共享连接
+		/// </summary>
+		/// <remarks>Calls to Open/CloseSharedConnection are reference counted and should be balanced</remarks>
 		public void OpenSharedConnection()
 		{
 			if(_sharedConnectionDepth == 0)
@@ -164,7 +187,9 @@ namespace NetRube.Data
 			_sharedConnectionDepth++;
 		}
 
-		/// <summary>释放共享连接</summary>
+		/// <summary>
+		/// 释放共享连接
+		/// </summary>
 		public void CloseSharedConnection()
 		{
 			if(_sharedConnectionDepth > 0)
@@ -179,7 +204,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>获取当前的共享连接，如果没有连接将返回 null</summary>
+		/// <summary>
+		/// 获取当前的共享连接，如果没有连接将返回 null
+		/// </summary>
 		/// <value>The connection.</value>
 		public IDbConnection Connection
 		{
@@ -191,10 +218,11 @@ namespace NetRube.Data
 		#region Transaction Management
 		// Helper to create a transaction scope
 
-		/// <summary>开始或继续事务</summary>
+		/// <summary>
+		/// 开始或继续事务
+		/// </summary>
 		/// <returns>一个 <see cref="ITransaction" /> 引用</returns>
-		/// <remarks>
-		/// This method makes management of calls to Begin/End/CompleteTransaction easier.
+		/// <remarks>This method makes management of calls to Begin/End/CompleteTransaction easier.
 		/// The usage pattern for this should be:
 		/// using (var tx = db.GetTransaction())
 		/// {
@@ -204,24 +232,29 @@ namespace NetRube.Data
 		/// tx.Complete();
 		/// }
 		/// Transactions can be nested but they must all be completed otherwise the entire
-		/// transaction is aborted.
-		/// </remarks>
+		/// transaction is aborted.</remarks>
 		public ITransaction GetTransaction()
 		{
 			return new Transaction(this);
 		}
 
-		/// <summary>在开始事务时调用。</summary>
+		/// <summary>
+		/// 在开始事务时调用。
+		/// </summary>
 		public virtual void OnBeginTransaction()
 		{
 		}
 
-		/// <summary>在结束事务时调用。</summary>
+		/// <summary>
+		/// 在结束事务时调用。
+		/// </summary>
 		public virtual void OnEndTransaction()
 		{
 		}
 
-		/// <summary>开始事务</summary>
+		/// <summary>
+		/// 开始事务
+		/// </summary>
 		public void BeginTransaction()
 		{
 			_transactionDepth++;
@@ -254,11 +287,11 @@ namespace NetRube.Data
 			CloseSharedConnection();
 		}
 
-		/// <summary>中止事务</summary>
-		/// <remarks>
-		/// Called automatically by Transaction.Dispose()
-		/// if the transaction wasn't completed.
-		/// </remarks>
+		/// <summary>
+		/// 中止事务
+		/// </summary>
+		/// <remarks>Called automatically by Transaction.Dispose()
+		/// if the transaction wasn't completed.</remarks>
 		public void AbortTransaction()
 		{
 			_transactionCancelled = true;
@@ -266,7 +299,9 @@ namespace NetRube.Data
 				CleanupTransaction();
 		}
 
-		/// <summary>完成事务</summary>
+		/// <summary>
+		/// 完成事务
+		/// </summary>
 		public void CompleteTransaction()
 		{
 			if((--_transactionDepth) == 0)
@@ -366,7 +401,9 @@ namespace NetRube.Data
 
 		// Create a command
 		static Regex rxParamsPrefix = new Regex(@"(?<!@)@\w+", RegexOptions.Compiled);
-		/// <summary>创建命令</summary>
+		/// <summary>
+		/// 创建命令
+		/// </summary>
 		/// <param name="connection">数据源连接</param>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
@@ -409,7 +446,9 @@ namespace NetRube.Data
 
 		#region Exception Reporting and Logging
 
-		/// <summary>在数据源操作过程出现异常时调用，可以在派生类中重新实现日志记录。</summary>
+		/// <summary>
+		/// 在数据源操作过程出现异常时调用，可以在派生类中重新实现日志记录。
+		/// </summary>
 		/// <param name="x">异常信息</param>
 		/// <returns>如果为 <c>true</c> 表示重新引发异常，如果为 <c>false</c> 表示阻止异常</returns>
 		public virtual bool OnException(Exception x)
@@ -419,35 +458,39 @@ namespace NetRube.Data
 			return true;
 		}
 
-		/// <summary>在打开连接时调用。</summary>
+		/// <summary>
+		/// 在打开连接时调用。
+		/// </summary>
 		/// <param name="conn">数据源连接</param>
 		/// <returns>原来或新的数据源连接</returns>
-		/// <remarks>
-		/// Override this method to provide custom logging of opening connection, or
-		/// to provide a proxy IDbConnection.
-		/// </remarks>
+		/// <remarks>Override this method to provide custom logging of opening connection, or
+		/// to provide a proxy IDbConnection.</remarks>
 		public virtual IDbConnection OnConnectionOpened(IDbConnection conn)
 		{
 			return conn;
 		}
 
-		/// <summary>在关闭连接时调用。</summary>
+		/// <summary>
+		/// 在关闭连接时调用。
+		/// </summary>
 		/// <param name="conn">数据源连接</param>
 		public virtual void OnConnectionClosing(IDbConnection conn)
 		{
 		}
 
-		/// <summary>在命令执行前时调用。</summary>
+		/// <summary>
+		/// 在命令执行前时调用。
+		/// </summary>
 		/// <param name="cmd">命令</param>
-		/// <remarks>
-		/// Override this method to provide custom logging of commands and/or
-		/// modification of the IDbCommand before it's executed
-		/// </remarks>
+		/// <remarks>Override this method to provide custom logging of commands and/or
+		/// modification of the IDbCommand before it's executed</remarks>
 		public virtual void OnExecutingCommand(IDbCommand cmd)
 		{
 		}
 
-		/// <summary>在命令执行完成时调用。</summary>
+		/// <summary>
+		/// 在命令执行完成时调用。
+		/// </summary>
 		/// <param name="cmd">命令</param>
 		public virtual void OnExecutedCommand(IDbCommand cmd)
 		{
@@ -456,7 +499,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region operation: Execute
-		/// <summary>执行指定的 SQL 语句</summary>
+		/// <summary>
+		/// 执行指定的 SQL 语句
+		/// </summary>
 		/// <param name="sql">要执行的 SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>受影响的行数</returns>
@@ -487,7 +532,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>执行指定的 SQL 语句</summary>
+		/// <summary>
+		/// 执行指定的 SQL 语句
+		/// </summary>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>受影响的行数</returns>
 		public int Execute(Sql sql)
@@ -499,7 +546,9 @@ namespace NetRube.Data
 
 		#region operation: ExecuteScalar
 
-		/// <summary>执行操作命令，并返回结果集中的第一行的第一列的值</summary>
+		/// <summary>
+		/// 执行操作命令，并返回结果集中的第一行的第一列的值
+		/// </summary>
 		/// <typeparam name="T">返回的数据类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
@@ -537,7 +586,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>执行操作命令，并返回结果集中的第一行的第一列的值</summary>
+		/// <summary>
+		/// 执行操作命令，并返回结果集中的第一行的第一列的值
+		/// </summary>
 		/// <typeparam name="T">返回的数据类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>结果集中的第一行的第一列的值</returns>
@@ -550,7 +601,9 @@ namespace NetRube.Data
 
 		#region operation: Fetch
 
-		/// <summary>获取查询结果</summary>
+		/// <summary>
+		/// 获取查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
@@ -560,7 +613,9 @@ namespace NetRube.Data
 			return Query<T>(sql, args).ToList();
 		}
 
-		/// <summary>获取查询结果</summary>
+		/// <summary>
+		/// 获取查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>查询结果</returns>
@@ -599,7 +654,9 @@ namespace NetRube.Data
 			sqlCount = parts.sqlCount;
 		}
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="page">从 1 开始的页码</param>
 		/// <param name="itemsPerPage">每页记录数</param>
@@ -608,10 +665,8 @@ namespace NetRube.Data
 		/// <param name="sqlPage">用于获取分页结果的 SQL 语句</param>
 		/// <param name="pageArgs">用于获取分页结果的 SQL 语句的参数</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// This method allows separate SQL statements to be explicitly provided for the two parts of the page query.
-		/// The page and itemsPerPage parameters are not used directly and are used simply to populate the returned Page object.
-		/// </remarks>
+		/// <remarks>This method allows separate SQL statements to be explicitly provided for the two parts of the page query.
+		/// The page and itemsPerPage parameters are not used directly and are used simply to populate the returned Page object.</remarks>
 		public Page<T> Page<T>(long page, long itemsPerPage, string sqlCount, object[] countArgs, string sqlPage, object[] pageArgs)
 		{
 			// Save the one-time command time out and use it for both queries
@@ -638,18 +693,18 @@ namespace NetRube.Data
 			return result;
 		}
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="page">从 1 开始的页码</param>
 		/// <param name="itemsPerPage">每页记录数</param>
 		/// <param name="sql">基本 SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
+		/// <remarks>PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
 		/// records for the specified page.  It will also execute a second query to retrieve the
-		/// total number of records in the result set.
-		/// </remarks>
+		/// total number of records in the result set.</remarks>
 		public Page<T> Page<T>(long page, long itemsPerPage, string sql, params object[] args)
 		{
 			string sqlCount, sqlPage;
@@ -657,33 +712,33 @@ namespace NetRube.Data
 			return Page<T>(page, itemsPerPage, sqlCount, args, sqlPage, args);
 		}
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="page">从 1 开始的页码</param>
 		/// <param name="itemsPerPage">每页记录数</param>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
+		/// <remarks>PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
 		/// records for the specified page.  It will also execute a second query to retrieve the
-		/// total number of records in the result set.
-		/// </remarks>
+		/// total number of records in the result set.</remarks>
 		public Page<T> Page<T>(long page, long itemsPerPage, Sql sql)
 		{
 			return Page<T>(page, itemsPerPage, sql.SQL, sql.Arguments);
 		}
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="page">从 1 开始的页码</param>
 		/// <param name="itemsPerPage">每页记录数</param>
 		/// <param name="sqlCount">用于获取总记录数的 SQL 语句生成器对象</param>
 		/// <param name="sqlPage">用于获取分页结果的 SQL 语句生成器对象</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// This method allows separate SQL statements to be explicitly provided for the two parts of the page query.
-		/// The page and itemsPerPage parameters are not used directly and are used simply to populate the returned Page object.
-		/// </remarks>
+		/// <remarks>This method allows separate SQL statements to be explicitly provided for the two parts of the page query.
+		/// The page and itemsPerPage parameters are not used directly and are used simply to populate the returned Page object.</remarks>
 		public Page<T> Page<T>(long page, long itemsPerPage, Sql sqlCount, Sql sqlPage)
 		{
 			return Page<T>(page, itemsPerPage, sqlCount.SQL, sqlCount.Arguments, sqlPage.SQL, sqlPage.Arguments);
@@ -693,32 +748,32 @@ namespace NetRube.Data
 
 		#region operation: Fetch (page)
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="page">从 1 开始的页码</param>
 		/// <param name="itemsPerPage">每页记录数</param>
 		/// <param name="sql">基本 SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
-		/// records for the specified page.
-		/// </remarks>
+		/// <remarks>PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
+		/// records for the specified page.</remarks>
 		public List<T> Fetch<T>(long page, long itemsPerPage, string sql, params object[] args)
 		{
 			return SkipTake<T>((page - 1) * itemsPerPage, itemsPerPage, sql, args);
 		}
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="page">从 1 开始的页码</param>
 		/// <param name="itemsPerPage">每页记录数</param>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
-		/// records for the specified page.
-		/// </remarks>
+		/// <remarks>PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
+		/// records for the specified page.</remarks>
 		public List<T> Fetch<T>(long page, long itemsPerPage, Sql sql)
 		{
 			return SkipTake<T>((page - 1) * itemsPerPage, itemsPerPage, sql.SQL, sql.Arguments);
@@ -728,17 +783,17 @@ namespace NetRube.Data
 
 		#region operation: SkipTake
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="skip">要跳过的记录数</param>
 		/// <param name="take">要获取的记录数</param>
 		/// <param name="sql">基本 SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
-		/// records for the specified range.
-		/// </remarks>
+		/// <remarks>PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
+		/// records for the specified range.</remarks>
 		public List<T> SkipTake<T>(long skip, long take, string sql, params object[] args)
 		{
 			string sqlCount, sqlPage;
@@ -746,16 +801,16 @@ namespace NetRube.Data
 			return Fetch<T>(sqlPage, args);
 		}
 
-		/// <summary>获取分页查询结果</summary>
+		/// <summary>
+		/// 获取分页查询结果
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="skip">要跳过的记录数</param>
 		/// <param name="take">要获取的记录数</param>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>分页结果</returns>
-		/// <remarks>
-		/// PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
-		/// records for the specified range.
-		/// </remarks>
+		/// <remarks>PetaPoco will automatically modify the supplied SELECT statement to only retrieve the
+		/// records for the specified range.</remarks>
 		public List<T> SkipTake<T>(long skip, long take, Sql sql)
 		{
 			return SkipTake<T>(skip, take, sql.SQL, sql.Arguments);
@@ -764,16 +819,16 @@ namespace NetRube.Data
 
 		#region operation: Query
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>结果集</returns>
-		/// <remarks>
-		/// For some DB providers, care should be taken to not start a new Query before finishing with
+		/// <remarks>For some DB providers, care should be taken to not start a new Query before finishing with
 		/// and disposing the previous one. In cases where this is an issue, consider using Fetch which
-		/// returns the results as a List rather than an IEnumerable.
-		/// </remarks>
+		/// returns the results as a List rather than an IEnumerable.</remarks>
 		public IEnumerable<T> Query<T>(string sql, params object[] args)
 		{
 			if(EnableAutoSelect)
@@ -827,15 +882,15 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>结果集</returns>
-		/// <remarks>
-		/// For some DB providers, care should be taken to not start a new Query before finishing with
+		/// <remarks>For some DB providers, care should be taken to not start a new Query before finishing with
 		/// and disposing the previous one. In cases where this is an issue, consider using Fetch which
-		/// returns the results as a List rather than an IEnumerable.
-		/// </remarks>
+		/// returns the results as a List rather than an IEnumerable.</remarks>
 		public IEnumerable<T> Query<T>(Sql sql)
 		{
 			return Query<T>(sql.SQL, sql.Arguments);
@@ -845,7 +900,9 @@ namespace NetRube.Data
 
 		#region operation: Exists
 
-		/// <summary>检测记录是否存在</summary>
+		/// <summary>
+		/// 检测记录是否存在
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sqlCondition">SQL 条件语句</param>
 		/// <param name="args">参数</param>
@@ -857,7 +914,9 @@ namespace NetRube.Data
 			return ExecuteScalar<int>(string.Format(_dbType.GetExistsSql(), poco.TableName, sqlCondition), args) != 0;
 		}
 
-		/// <summary>检测记录是否存在</summary>
+		/// <summary>
+		/// 检测记录是否存在
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="primaryKey">主键名</param>
 		/// <returns>返回指示记录是否存在</returns>
@@ -870,44 +929,46 @@ namespace NetRube.Data
 
 		#region operation: linq style (Exists, Single, SingleOrDefault etc...)
 
-		/// <summary>获取单个记录</summary>
+		/// <summary>
+		/// 获取单个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="primaryKey">主键名</param>
 		/// <returns>实体对象</returns>
-		/// <remarks>
-		/// Throws an exception if there are zero or more than one record with the specified primary key value.
-		/// </remarks>
+		/// <remarks>Throws an exception if there are zero or more than one record with the specified primary key value.</remarks>
 		public T Single<T>(object primaryKey)
 		{
 			return Single<T>(string.Format("WHERE {0}=@0", _dbType.EscapeSqlIdentifier(PocoData.ForType(typeof(T)).TableInfo.PrimaryKey)), primaryKey);
 		}
 
-		/// <summary>获取单个记录</summary>
+		/// <summary>
+		/// 获取单个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="primaryKey">主键名</param>
 		/// <returns>实体对象</returns>
-		/// <remarks>
-		/// If there are no records with the specified primary key value, default(T) (typically null) is returned.
-		/// </remarks>
+		/// <remarks>If there are no records with the specified primary key value, default(T) (typically null) is returned.</remarks>
 		public T SingleOrDefault<T>(object primaryKey)
 		{
 			return SingleOrDefault<T>(string.Format("WHERE {0}=@0", _dbType.EscapeSqlIdentifier(PocoData.ForType(typeof(T)).TableInfo.PrimaryKey)), primaryKey);
 		}
 
-		/// <summary>获取单个记录</summary>
+		/// <summary>
+		/// 获取单个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>实体对象</returns>
-		/// <remarks>
-		/// Throws an exception if there are zero or more than one matching record
-		/// </remarks>
+		/// <remarks>Throws an exception if there are zero or more than one matching record</remarks>
 		public T Single<T>(string sql, params object[] args)
 		{
 			return Query<T>(sql, args).Single();
 		}
 
-		/// <summary>获取单个记录</summary>
+		/// <summary>
+		/// 获取单个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
@@ -917,7 +978,9 @@ namespace NetRube.Data
 			return Query<T>(sql, args).SingleOrDefault();
 		}
 
-		/// <summary>获取第一个记录</summary>
+		/// <summary>
+		/// 获取第一个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
@@ -927,7 +990,9 @@ namespace NetRube.Data
 			return Query<T>(sql, args).First();
 		}
 
-		/// <summary>获取第一个记录</summary>
+		/// <summary>
+		/// 获取第一个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
@@ -938,19 +1003,21 @@ namespace NetRube.Data
 		}
 
 
-		/// <summary>获取单个记录</summary>
+		/// <summary>
+		/// 获取单个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>实体对象</returns>
-		/// <remarks>
-		/// Throws an exception if there are zero or more than one matching record
-		/// </remarks>
+		/// <remarks>Throws an exception if there are zero or more than one matching record</remarks>
 		public T Single<T>(Sql sql)
 		{
 			return Query<T>(sql).Single();
 		}
 
-		/// <summary>获取单个记录</summary>
+		/// <summary>
+		/// 获取单个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>实体对象</returns>
@@ -959,7 +1026,9 @@ namespace NetRube.Data
 			return Query<T>(sql).SingleOrDefault();
 		}
 
-		/// <summary>获取第一个记录</summary>
+		/// <summary>
+		/// 获取第一个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>实体对象</returns>
@@ -968,7 +1037,9 @@ namespace NetRube.Data
 			return Query<T>(sql).First();
 		}
 
-		/// <summary>获取第一个记录</summary>
+		/// <summary>
+		/// 获取第一个记录
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>实体对象</returns>
@@ -1008,7 +1079,7 @@ namespace NetRube.Data
 		/// <param name="autoIncrement">主键是否为自增列</param>
 		/// <param name="poco">要插入的实体</param>
 		/// <returns>返回插入后的主键值</returns>
-		/// <remarks>Inserts a poco into a table.  If the poco has a property with the same name 
+		/// <remarks>Inserts a poco into a table.  If the poco has a property with the same name
 		/// as the primary key the id of the new record is assigned to it.  Either way,
 		/// the new id is returned.</remarks>
 		public object Insert(string tableName, string primaryKeyName, bool autoIncrement, object poco)
@@ -1113,10 +1184,8 @@ namespace NetRube.Data
 		/// </summary>
 		/// <param name="poco">要插入的实体</param>
 		/// <returns>返回插入后的主键值</returns>
-		/// <remarks>
-		/// The name of the table, it's primary key and whether it's an auto-allocated primary key are retrieved
-		/// from the POCO's attributes
-		/// </remarks>
+		/// <remarks>The name of the table, it's primary key and whether it's an auto-allocated primary key are retrieved
+		/// from the POCO's attributes</remarks>
 		public object Insert(object poco)
 		{
 			var pd = PocoData.ForType(poco.GetType());
@@ -1127,7 +1196,9 @@ namespace NetRube.Data
 
 		#region operation: Update
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="tableName">数据表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要更新的实体</param>
@@ -1138,7 +1209,9 @@ namespace NetRube.Data
 			return Update(tableName, primaryKeyName, poco, primaryKeyValue, null);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="tableName">数据表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要更新的实体</param>
@@ -1238,7 +1311,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="tableName">数据表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要更新的实体</param>
@@ -1248,7 +1323,9 @@ namespace NetRube.Data
 			return Update(tableName, primaryKeyName, poco, null);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="tableName">数据表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要更新的实体</param>
@@ -1259,7 +1336,9 @@ namespace NetRube.Data
 			return Update(tableName, primaryKeyName, poco, null, columns);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="poco">要更新的实体</param>
 		/// <param name="columns">要更新的字段名集合</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
@@ -1268,7 +1347,9 @@ namespace NetRube.Data
 			return Update(poco, null, columns);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="poco">要更新的实体</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
 		public int Update(object poco)
@@ -1276,7 +1357,9 @@ namespace NetRube.Data
 			return Update(poco, null, null);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="poco">要更新的实体</param>
 		/// <param name="primaryKeyValue">主键值</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
@@ -1285,7 +1368,9 @@ namespace NetRube.Data
 			return Update(poco, primaryKeyValue, null);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="poco">要更新的实体</param>
 		/// <param name="primaryKeyValue">主键值</param>
 		/// <param name="columns">要更新的字段名集合</param>
@@ -1296,7 +1381,9 @@ namespace NetRube.Data
 			return Update(pd.TableInfo.TableName, pd.TableInfo.PrimaryKey, poco, primaryKeyValue, columns);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">更新和条件部分的 SQL 语句（“UPDATE 表名”后面的部分）</param>
 		/// <param name="args">参数</param>
@@ -1307,7 +1394,9 @@ namespace NetRube.Data
 			return Execute(string.Format("UPDATE {0} {1}", _dbType.EscapeTableName(pd.TableInfo.TableName), sql), args);
 		}
 
-		/// <summary>执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行更新命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
@@ -1320,7 +1409,9 @@ namespace NetRube.Data
 
 		#region operation: Delete
 
-		/// <summary>执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="tableName">表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要更新的实体</param>
@@ -1330,7 +1421,9 @@ namespace NetRube.Data
 			return Delete(tableName, primaryKeyName, poco, null);
 		}
 
-		/// <summary>执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="tableName">表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要更新的实体</param>
@@ -1354,7 +1447,9 @@ namespace NetRube.Data
 			return Execute(sql, primaryKeyValue);
 		}
 
-		/// <summary>执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <param name="poco">要更新的实体</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
 		public int Delete(object poco)
@@ -1363,7 +1458,9 @@ namespace NetRube.Data
 			return Delete(pd.TableInfo.TableName, pd.TableInfo.PrimaryKey, poco);
 		}
 
-		/// <summary>执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="pocoOrPrimaryKey">主键值</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
@@ -1375,7 +1472,9 @@ namespace NetRube.Data
 			return Delete(pd.TableInfo.TableName, pd.TableInfo.PrimaryKey, null, pocoOrPrimaryKey);
 		}
 
-		/// <summary>执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">条件部分的 SQL 语句（“DELETE FROM 表名”后面的部分）</param>
 		/// <param name="args">参数</param>
@@ -1386,7 +1485,9 @@ namespace NetRube.Data
 			return Execute(string.Format("DELETE FROM {0} {1}", _dbType.EscapeTableName(pd.TableInfo.TableName), sql), args);
 		}
 
-		/// <summary>执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错</summary>
+		/// <summary>
+		/// 执行删除命令，并返回受影响的行数，返回 -1 表示执行命令出错
+		/// </summary>
 		/// <typeparam name="T">实体类型</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>返回受影响的行数，返回 -1 表示执行命令出错</returns>
@@ -1399,14 +1500,14 @@ namespace NetRube.Data
 
 		#region operation: IsNew
 
-		/// <summary>检测实体是否为新记录</summary>
+		/// <summary>
+		/// 检测实体是否为新记录
+		/// </summary>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要检测的实体</param>
 		/// <returns>是否为新记录</returns>
 		/// <exception cref="System.ArgumentException">找不到主键</exception>
-		/// <remarks>
-		/// This method simply tests if the POCO's primary key column property has been set to something non-zero.
-		/// </remarks>
+		/// <remarks>This method simply tests if the POCO's primary key column property has been set to something non-zero.</remarks>
 		public bool IsNew(string primaryKeyName, object poco)
 		{
 			var pd = PocoData.ForObject(poco, primaryKeyName);
@@ -1458,13 +1559,13 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>检测实体是否为新记录</summary>
+		/// <summary>
+		/// 检测实体是否为新记录
+		/// </summary>
 		/// <param name="poco">要检测的实体</param>
 		/// <returns>是否为新记录</returns>
 		/// <exception cref="System.InvalidOperationException">没有定义自增主键</exception>
-		/// <remarks>
-		/// This method simply tests if the POCO's primary key column property has been set to something non-zero.
-		/// </remarks>
+		/// <remarks>This method simply tests if the POCO's primary key column property has been set to something non-zero.</remarks>
 		public bool IsNew(object poco)
 		{
 			var pd = PocoData.ForType(poco.GetType());
@@ -1475,7 +1576,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region operation: Save
-		/// <summary>保存实体（自动判断插入或更新）</summary>
+		/// <summary>
+		/// 保存实体（自动判断插入或更新）
+		/// </summary>
 		/// <param name="tableName">表名</param>
 		/// <param name="primaryKeyName">主键名</param>
 		/// <param name="poco">要保存的实体</param>
@@ -1491,7 +1594,9 @@ namespace NetRube.Data
 			}
 		}
 
-		/// <summary>保存实体（自动判断插入或更新）</summary>
+		/// <summary>
+		/// 保存实体（自动判断插入或更新）
+		/// </summary>
 		/// <param name="poco">要保存的实体</param>
 		public void Save(object poco)
 		{
@@ -1501,7 +1606,9 @@ namespace NetRube.Data
 		#endregion
 
 		#region operation: Multi-Poco Query/Fetch
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="TRet">返回的结果实体类型</typeparam>
@@ -1511,7 +1618,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<TRet> Fetch<T1, T2, TRet>(Func<T1, T2, TRet> cb, string sql, params object[] args) { return Query<T1, T2, TRet>(cb, sql, args).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1522,7 +1631,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<TRet> Fetch<T1, T2, T3, TRet>(Func<T1, T2, T3, TRet> cb, string sql, params object[] args) { return Query<T1, T2, T3, TRet>(cb, sql, args).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1534,7 +1645,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<TRet> Fetch<T1, T2, T3, T4, TRet>(Func<T1, T2, T3, T4, TRet> cb, string sql, params object[] args) { return Query<T1, T2, T3, T4, TRet>(cb, sql, args).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="TRet">返回的结果实体类型</typeparam>
@@ -1544,7 +1657,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<TRet> Query<T1, T2, TRet>(Func<T1, T2, TRet> cb, string sql, params object[] args) { return Query<TRet>(new Type[] { typeof(T1), typeof(T2) }, cb, sql, args); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1555,7 +1670,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<TRet> Query<T1, T2, T3, TRet>(Func<T1, T2, T3, TRet> cb, string sql, params object[] args) { return Query<TRet>(new Type[] { typeof(T1), typeof(T2), typeof(T3) }, cb, sql, args); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1567,7 +1684,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<TRet> Query<T1, T2, T3, T4, TRet>(Func<T1, T2, T3, T4, TRet> cb, string sql, params object[] args) { return Query<TRet>(new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, cb, sql, args); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="TRet">返回的结果实体类型</typeparam>
@@ -1576,7 +1695,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<TRet> Fetch<T1, T2, TRet>(Func<T1, T2, TRet> cb, Sql sql) { return Query<T1, T2, TRet>(cb, sql.SQL, sql.Arguments).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1586,7 +1707,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<TRet> Fetch<T1, T2, T3, TRet>(Func<T1, T2, T3, TRet> cb, Sql sql) { return Query<T1, T2, T3, TRet>(cb, sql.SQL, sql.Arguments).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1597,7 +1720,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<TRet> Fetch<T1, T2, T3, T4, TRet>(Func<T1, T2, T3, T4, TRet> cb, Sql sql) { return Query<T1, T2, T3, T4, TRet>(cb, sql.SQL, sql.Arguments).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="TRet">返回的结果实体类型</typeparam>
@@ -1606,7 +1731,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<TRet> Query<T1, T2, TRet>(Func<T1, T2, TRet> cb, Sql sql) { return Query<TRet>(new Type[] { typeof(T1), typeof(T2) }, cb, sql.SQL, sql.Arguments); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1616,7 +1743,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<TRet> Query<T1, T2, T3, TRet>(Func<T1, T2, T3, TRet> cb, Sql sql) { return Query<TRet>(new Type[] { typeof(T1), typeof(T2), typeof(T3) }, cb, sql.SQL, sql.Arguments); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1627,7 +1756,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<TRet> Query<T1, T2, T3, T4, TRet>(Func<T1, T2, T3, T4, TRet> cb, Sql sql) { return Query<TRet>(new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, cb, sql.SQL, sql.Arguments); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <param name="sql">SQL 语句</param>
@@ -1635,7 +1766,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<T1> Fetch<T1, T2>(string sql, params object[] args) { return Query<T1, T2>(sql, args).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1644,7 +1777,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<T1> Fetch<T1, T2, T3>(string sql, params object[] args) { return Query<T1, T2, T3>(sql, args).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1654,7 +1789,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<T1> Fetch<T1, T2, T3, T4>(string sql, params object[] args) { return Query<T1, T2, T3, T4>(sql, args).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <param name="sql">SQL 语句</param>
@@ -1662,7 +1799,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<T1> Query<T1, T2>(string sql, params object[] args) { return Query<T1>(new Type[] { typeof(T1), typeof(T2) }, null, sql, args); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1671,7 +1810,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<T1> Query<T1, T2, T3>(string sql, params object[] args) { return Query<T1>(new Type[] { typeof(T1), typeof(T2), typeof(T3) }, null, sql, args); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1681,14 +1822,18 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<T1> Query<T1, T2, T3, T4>(string sql, params object[] args) { return Query<T1>(new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, null, sql, args); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>结果集</returns>
 		public List<T1> Fetch<T1, T2>(Sql sql) { return Query<T1, T2>(sql.SQL, sql.Arguments).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1696,7 +1841,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<T1> Fetch<T1, T2, T3>(Sql sql) { return Query<T1, T2, T3>(sql.SQL, sql.Arguments).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1705,14 +1852,18 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public List<T1> Fetch<T1, T2, T3, T4>(Sql sql) { return Query<T1, T2, T3, T4>(sql.SQL, sql.Arguments).ToList(); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <param name="sql">SQL 语句生成器对象</param>
 		/// <returns>结果集</returns>
 		public IEnumerable<T1> Query<T1, T2>(Sql sql) { return Query<T1>(new Type[] { typeof(T1), typeof(T2) }, null, sql.SQL, sql.Arguments); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1720,7 +1871,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<T1> Query<T1, T2, T3>(Sql sql) { return Query<T1>(new Type[] { typeof(T1), typeof(T2), typeof(T3) }, null, sql.SQL, sql.Arguments); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="T1">实体类型1</typeparam>
 		/// <typeparam name="T2">实体类型2</typeparam>
 		/// <typeparam name="T3">实体类型3</typeparam>
@@ -1729,7 +1882,9 @@ namespace NetRube.Data
 		/// <returns>结果集</returns>
 		public IEnumerable<T1> Query<T1, T2, T3, T4>(Sql sql) { return Query<T1>(new Type[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, null, sql.SQL, sql.Arguments); }
 
-		/// <summary>获取结果集</summary>
+		/// <summary>
+		/// 获取结果集
+		/// </summary>
 		/// <typeparam name="TRet">结果实体类型</typeparam>
 		/// <param name="types">多个实体类型</param>
 		/// <param name="cb">实体间的关联转换器</param>
@@ -1803,16 +1958,22 @@ namespace NetRube.Data
 
 		#region Last Command
 
-		/// <summary>获取最后执行的 SQL 语句</summary>
+		/// <summary>
+		/// 获取最后执行的 SQL 语句
+		/// </summary>
 		/// <value>最后执行的 SQL 语句</value>
 		public string LastSQL { get { return _lastSql; } }
 
-		/// <summary>获取最后执行 SQL 语句所用的参数</summary>
+		/// <summary>
+		/// 获取最后执行 SQL 语句所用的参数
+		/// </summary>
 		/// <value>最后使用的参数</value>
 		public object[] LastArgs { get { return _lastArgs; } }
 
 
-		/// <summary>获取最后执行的命令（包含 SQL 语句和参数）</summary>
+		/// <summary>
+		/// 获取最后执行的命令（包含 SQL 语句和参数）
+		/// </summary>
 		/// <value>最后执行的命令</value>
 		public string LastCommand
 		{
@@ -1822,7 +1983,9 @@ namespace NetRube.Data
 
 		#region FormatCommand
 
-		/// <summary>以友好方式格式化命令信息（SQL 语句和参数）</summary>
+		/// <summary>
+		/// 以友好方式格式化命令信息（SQL 语句和参数）
+		/// </summary>
 		/// <param name="cmd">命令</param>
 		/// <returns>格式化后的 SQL 语句和参数</returns>
 		public string FormatCommand(IDbCommand cmd)
@@ -1830,7 +1993,9 @@ namespace NetRube.Data
 			return FormatCommand(cmd.CommandText, (from IDataParameter parameter in cmd.Parameters select parameter.Value).ToArray());
 		}
 
-		/// <summary>以友好方式格式化 SQL 语句和参数</summary>
+		/// <summary>
+		/// 以友好方式格式化 SQL 语句和参数
+		/// </summary>
 		/// <param name="sql">SQL 语句</param>
 		/// <param name="args">参数</param>
 		/// <returns>格式化后的 SQL 语句和参数</returns>
@@ -1862,7 +2027,9 @@ namespace NetRube.Data
 			set;
 		} */
 
-		/// <summary>获取或设置是否在需要时自动创建“SELECT 字段”部分</summary>
+		/// <summary>
+		/// 获取或设置是否在需要时自动创建“SELECT 字段”部分
+		/// </summary>
 		/// <value>指示是否在需要时自动创建“SELECT 字段”部分</value>
 		public bool EnableAutoSelect
 		{
@@ -1870,7 +2037,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置是否启用“@参数名”格式的参数名</summary>
+		/// <summary>
+		/// 获取或设置是否启用“@参数名”格式的参数名
+		/// </summary>
 		/// <value>指示是否启用“@参数名”格式的参数名</value>
 		public bool EnableNamedParams
 		{
@@ -1878,7 +2047,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置所有 SQL 语句每次执行的超时时间</summary>
+		/// <summary>
+		/// 获取或设置所有 SQL 语句每次执行的超时时间
+		/// </summary>
 		/// <value>所有 SQL 语句每次执行的超时时间</value>
 		public int CommandTimeout
 		{
@@ -1886,7 +2057,9 @@ namespace NetRube.Data
 			set;
 		}
 
-		/// <summary>获取或设置下一个 SQL 语句执行的超时时间</summary>
+		/// <summary>
+		/// 获取或设置下一个 SQL 语句执行的超时时间
+		/// </summary>
 		/// <value>下一个 SQL 语句执行的超时时间</value>
 		public int OneTimeCommandTimeout
 		{
@@ -1954,14 +2127,20 @@ namespace NetRube.Data
 		#endregion
 
 		#region 扩展
-		/// <summary>获取或设置是否启用日志记录</summary>
+		/// <summary>
+		/// 获取或设置是否启用日志记录
+		/// </summary>
 		/// <value>如果启用日志记录，则该值为 <c>true</c>；否则为 <c>false</c>。</value>
 		public bool EnableWriteLog { get; set; }
-		/// <summary>获取或设置日志路径</summary>
+		/// <summary>
+		/// 获取或设置日志路径
+		/// </summary>
 		/// <value>日志路径</value>
 		public string LogPath { get; set; }
 
-		/// <summary>记录日志</summary>
+		/// <summary>
+		/// 记录日志
+		/// </summary>
 		public void WriteLog()
 		{
 			Utils.WriteTextFile("时间: {0}\t数据库类型:{1}{2}{3}{2}{2}"

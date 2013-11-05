@@ -1,6 +1,19 @@
-﻿using System;
+﻿// ***********************************************************************
+// 程序集			: NetRube.Data
+// 文件名			: OracleProvider.cs
+// 作者				: NetRube
+// 创建时间			: 2013-08-05
+//
+// 最后修改者		: NetRube
+// 最后修改时间		: 2013-11-05
+// ***********************************************************************
+
+using System;
 using System.Data.Common;
 
+/// <summary>
+/// Data 命名空间
+/// </summary>
 namespace NetRube.Data
 {
 	/* 
@@ -38,7 +51,9 @@ namespace NetRube.Data
 
 	 */
 
-	/// <summary>Oracle 数据源适配器</summary>
+	/// <summary>
+	/// Oracle 数据源适配器
+	/// </summary>
 	public class OracleProvider : DbProviderFactory
 	{
 		//private const string _assemblyName = "Oracle.DataAccess";
@@ -50,10 +65,14 @@ namespace NetRube.Data
 		private static Type _commandType;
 
 		// Required for DbProviderFactories.GetFactory() to work.
-		/// <summary>Oracle 数据源适配器实例</summary>
+		/// <summary>
+		/// Oracle 数据源适配器实例
+		/// </summary>
 		public static OracleProvider Instance = new OracleProvider();
 
-		/// <summary>初始化一个新 <see cref="OracleProvider"/> 实例。</summary>
+		/// <summary>
+		/// 初始化一个新 <see cref="OracleProvider" /> 实例。
+		/// </summary>
 		/// <exception cref="System.InvalidOperationException">Can't find Connection type:  + _connectionTypeName</exception>
 		public OracleProvider()
 		{
