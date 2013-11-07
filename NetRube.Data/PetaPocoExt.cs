@@ -5,7 +5,7 @@
 // 创建时间			: 2013-08-05
 //
 // 最后修改者		: NetRube
-// 最后修改时间		: 2013-11-05
+// 最后修改时间		: 2013-11-07
 // ***********************************************************************
 
 using System;
@@ -557,5 +557,21 @@ namespace NetRube.Data
 			return GetTableAndColumnName(db, typeof(T), Utils.GetPropertyName(expression));
 		}
 		#endregion
+
+		/// <summary>
+		/// 调用 SQL IN 函数
+		/// </summary>
+		/// <typeparam name="T">字段栏数据库类型</typeparam>
+		/// <typeparam name="Table">数据库表数据库类型</typeparam>
+		/// <param name="field">字段栏</param>
+		/// <param name="gb">查询构建器</param>
+		/// <returns>表示此SQL 函数的返回值类型。只能在 SQL 构建器中调用，当直接调用此 SQL 函数时将引发 <see cref="NotSupportedException"/> 异常。</returns>
+		/// <exception cref="NotSupportedException">只能在 SQL 构建器中调用，当直接调用此 SQL 函数时将引发此异常。</exception>
+		public static bool In_<T, Table>(this T field, GetBuilder<Table> gb)
+			where T : struct
+			where Table : class, new()
+		{
+			throw new NotSupportedException("不能直接调用此方法，只能在 SQL 构建器中调用。");
+		}
 	}
 }
