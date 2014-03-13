@@ -5,7 +5,7 @@
 // 创建时间			: 2013-08-05
 //
 // 最后修改者		: NetRube
-// 最后修改时间		: 2013-11-05
+// 最后修改时间		: 2014-03-13
 // ***********************************************************************
 
 // PetaPoco - A Tiny ORMish thing for your POCO's.
@@ -134,8 +134,8 @@ namespace NetRube.Data.DatabaseTypes
 					args.Count,
 					args.Count + 1
 				);
-			args.Add(take);
 			args.Add(skip);
+			args.Add(skip + take);
 			return sql;
 		}
 		#endregion
